@@ -36,4 +36,11 @@ extension UIColor {
 		}
 		fatalError("Could not find AccentColor")
 	}
+	
+	class var GreenGreyColor: UIColor {
+		if let color = UIColor(named: "GreenGreyColor") {
+			return color
+		}
+		fatalError("Could not find GreenGreyColor")
+	}
 }

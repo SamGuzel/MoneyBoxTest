@@ -15,7 +15,6 @@ import UIKit
 class LoginViewController: UIViewController {
 	
 	let logo = UIImageView(image: UIImage(named: "moneybox"))
-	let titleMessageLabel = UILabel()
 	let loginView = LoginView()
 	let loginButton = UIButton(type: .system)
 	let errorMessageLabel = UILabel()
@@ -41,12 +40,6 @@ extension LoginViewController {
 		loginView.translatesAutoresizingMaskIntoConstraints = false
 		logo.translatesAutoresizingMaskIntoConstraints = false
 		
-		titleMessageLabel.translatesAutoresizingMaskIntoConstraints = false
-		titleMessageLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-		titleMessageLabel.textAlignment = .left
-		titleMessageLabel.textColor = .AccentColor
-		titleMessageLabel.text = "Welcome back, please login"
-		
 		/// handle the login button
 		loginButton.translatesAutoresizingMaskIntoConstraints = false
 		loginButton.setTitleColor(.black, for: .normal)
@@ -57,7 +50,7 @@ extension LoginViewController {
 		/// rounded corners
 		loginButton.layer.cornerRadius = 5
 		loginButton.clipsToBounds = true
-		view.backgroundColor = .GreyColor
+		view.backgroundColor = .GreenGreyColor
 		
 		errorMessageLabel.translatesAutoresizingMaskIntoConstraints = false
 		errorMessageLabel.textAlignment = .center
@@ -69,24 +62,16 @@ extension LoginViewController {
 	
 	private func layout() {
 		view.addSubview(logo)
-		view.addSubview(titleMessageLabel)
 		view.addSubview(loginView)
 		view.addSubview(loginButton)
 		view.addSubview(errorMessageLabel)
 		
 		/// logo
 		NSLayoutConstraint.activate([
-			titleMessageLabel.topAnchor.constraint(equalToSystemSpacingBelow: logo.bottomAnchor, multiplier: 3),
-			logo.leadingAnchor.constraint(equalTo: titleMessageLabel.leadingAnchor),
+			loginView.topAnchor.constraint(equalToSystemSpacingBelow: logo.bottomAnchor, multiplier: 3),
+			logo.leadingAnchor.constraint(equalTo: loginView.leadingAnchor),
 			logo.trailingAnchor.constraint(equalTo: logo.trailingAnchor)
 
-		])
-		
-		/// title
-		NSLayoutConstraint.activate([
-			loginView.topAnchor.constraint(equalToSystemSpacingBelow: titleMessageLabel.bottomAnchor, multiplier: 3),
-			titleMessageLabel.leadingAnchor.constraint(equalTo: loginView.leadingAnchor),
-			titleMessageLabel.trailingAnchor.constraint(equalTo: loginView.trailingAnchor)
 		])
 		
 		/// login view
