@@ -13,12 +13,14 @@ import UIKit
 //A screen to show some details of the account, including a simple button to add money to its moneybox.
 //The button will add a fixed amount of £10. It should use the POST /oneoffpayments endpoint provided, and the account's Moneybox amount would be updated.
 class LoginViewController: UIViewController {
+	
 	let logo = UIImageView(image: UIImage(named: "moneybox"))
+	let titleMessageLabel = UILabel()
 	let loginView = LoginView()
 	let loginButton = UIButton(type: .system)
 	let errorMessageLabel = UILabel()
 	
-	var username: String? {
+	var email: String? {
 		return loginView.emailTextField.text
 	}
 	
@@ -39,6 +41,12 @@ extension LoginViewController {
 		loginView.translatesAutoresizingMaskIntoConstraints = false
 		logo.translatesAutoresizingMaskIntoConstraints = false
 		
+		titleMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+		titleMessageLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+		titleMessageLabel.textAlignment = .left
+		titleMessageLabel.textColor = .AccentColor
+		titleMessageLabel.text = "Welcome back, please login"
+		
 		/// handle the login button
 		loginButton.translatesAutoresizingMaskIntoConstraints = false
 		loginButton.setTitleColor(.black, for: .normal)
@@ -55,22 +63,31 @@ extension LoginViewController {
 		errorMessageLabel.textAlignment = .center
 		errorMessageLabel.textColor = .systemRed
 		errorMessageLabel.numberOfLines = 0
-		errorMessageLabel.text = "Error - Failed to login"
-		errorMessageLabel.isHidden = false
+		errorMessageLabel.text = "Unexpected Error Occured please contact Customer Service on 12345"
+		errorMessageLabel.isHidden = true
 	}
 	
 	private func layout() {
-//		view.addSubview(logo)
+		view.addSubview(logo)
+		view.addSubview(titleMessageLabel)
 		view.addSubview(loginView)
 		view.addSubview(loginButton)
 		view.addSubview(errorMessageLabel)
 		
-//		/// login view
-//		NSLayoutConstraint.activate([
-//			logo.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//			logo.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
-//			view.trailingAnchor.constraint(equalToSystemSpacingAfter: logo.trailingAnchor, multiplier: 1)
-//		])
+		/// logo
+		NSLayoutConstraint.activate([
+			titleMessageLabel.topAnchor.constraint(equalToSystemSpacingBelow: logo.bottomAnchor, multiplier: 3),
+			logo.leadingAnchor.constraint(equalTo: titleMessageLabel.leadingAnchor),
+			logo.trailingAnchor.constraint(equalTo: logo.trailingAnchor)
+
+		])
+		
+		/// title
+		NSLayoutConstraint.activate([
+			loginView.topAnchor.constraint(equalToSystemSpacingBelow: titleMessageLabel.bottomAnchor, multiplier: 3),
+			titleMessageLabel.leadingAnchor.constraint(equalTo: loginView.leadingAnchor),
+			titleMessageLabel.trailingAnchor.constraint(equalTo: loginView.trailingAnchor)
+		])
 		
 		/// login view
 		NSLayoutConstraint.activate([
@@ -104,17 +121,25 @@ extension LoginViewController {
 	}
 	
 	private func login() {
-		guard let username = username, let password = password else {
+		guard let email = email, let password = password else {
 			assertionFailure("Username / password should never be nil")
 			return
 		}
 		
-		if username.isEmpty || password.isEmpty {
+		if email.isEmpty || password.isEmpty {
 			configureView(withMessage: "Username / Password cannot be blank")
 		}
-		let request =
-		let dataProvider = DataProvider()
-		dataProvider.login(request: request, completion: completion)
+//		let request =
+//		let dataProvider = DataProvider()
+//		dataProvider.login(request: request, completion: completion)
+		
+		/// temp
+		if  email == "Sam" && password == "sam" {
+			loginButton.backgroundColor = .green
+		} else {
+			configureView(withMessage: "Incorrect Login Details")
+		}
+		
 	}
 	private func configureView(withMessage message: String) {
 		errorMessageLabel.text = message
