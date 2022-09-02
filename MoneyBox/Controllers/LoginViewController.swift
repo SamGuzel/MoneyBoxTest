@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Networking
 
 
 //A login screen to allow existing users to sign in
@@ -13,6 +14,13 @@ import UIKit
 //A screen to show some details of the account, including a simple button to add money to its moneybox.
 //The button will add a fixed amount of £10. It should use the POST /oneoffpayments endpoint provided, and the account's Moneybox amount would be updated.
 class LoginViewController: UIViewController {
+	
+	let dataProvider = DataProvider()
+	
+	struct userData: Codable {
+		let email: String
+		let password: String
+	}
 	
 	let logo = UIImageView(image: UIImage(named: "moneybox"))
 	let loginView = LoginView()
@@ -30,13 +38,13 @@ class LoginViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		style()
+		setupUI()
 		layout()
 	}
 }
 
 extension LoginViewController {
-	private func style() {
+	private func setupUI() {
 		loginView.translatesAutoresizingMaskIntoConstraints = false
 		logo.translatesAutoresizingMaskIntoConstraints = false
 		
@@ -114,10 +122,18 @@ extension LoginViewController {
 		if email.isEmpty || password.isEmpty {
 			configureView(withMessage: "Username / Password cannot be blank")
 		}
-//		let request =
-//		let dataProvider = DataProvider()
-//		dataProvider.login(request: request, completion: completion)
+		let request = LoginRequest(email: email, password: password)
 		
+		dataProvider.login(request: request , completion: { result in
+			switch result {
+			case .failure(let error):
+				self.errorMessageLabel.text = error.localizedDescription
+				
+			case .success:
+				self.loginButton.backgroundColor = .orange
+			}
+			
+		})
 		/// temp
 		if  email == "Sam" && password == "sam" {
 			loginButton.backgroundColor = .green
